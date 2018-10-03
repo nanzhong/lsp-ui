@@ -408,14 +408,15 @@ START-Y is the position y of the current window."
   "Add text properties on text to make it clickable.
 The text delimiters are BOUNDS.
 FN is the function to call on click."
-  (let ((map (make-sparse-keymap)))
-    (define-key map [down-mouse-1] fn)
-    (put-text-property (car bounds) (cdr bounds) 'keymap map)
-    (put-text-property (car bounds) (cdr bounds) 'mouse-face
-                       (list :inherit 'lsp-ui-doc-url
-                             :box (list :line-width -1
-                                        :color (face-foreground 'lsp-ui-doc-url))))
-    (add-face-text-property (car bounds) (cdr bounds) 'lsp-ui-doc-url)))
+  (when bounds
+    (let ((map (make-sparse-keymap)))
+      (define-key map [down-mouse-1] fn)
+      (put-text-property (car bounds) (cdr bounds) 'keymap map)
+      (put-text-property (car bounds) (cdr bounds) 'mouse-face
+                         (list :inherit 'lsp-ui-doc-url
+                               :box (list :line-width -1
+                                          :color (face-foreground 'lsp-ui-doc-url))))
+      (add-face-text-property (car bounds) (cdr bounds) 'lsp-ui-doc-url))))
 
 (defun lsp-ui-doc--make-clickable-link ()
   "Find paths and urls in the buffer and make them clickable."
